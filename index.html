@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+  }
+
+  body {
+    /* 1. PUT YOUR IMAGE FILE IN THE SAME FOLDER AS THIS index.html */
+    /* 2. CHANGE "background.jpg" BELOW TO YOUR IMAGE'S FILENAME */
+    background-image: url("background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .countdown {
+    display: flex;
+    gap: 2rem;
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .unit .number {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .unit .label {
+    margin-top: 0.5rem;
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.85;
+  }
+
+  .finished {
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: white;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+  <div id="countdown" class="countdown"></div>
+
+  <script>
+    // ======= CHANGE THIS TO YOUR TARGET DATE/TIME =======
+    // Format: "YYYY-MM-DDTHH:MM:SS" in your local time,
+    // or add a timezone offset like "-05:00" if you want to be explicit.
+    const targetDate = new Date("2026-12-31T00:00:00");
+    // =====================================================
+
+    const el = document.getElementById("countdown");
+
+    function render() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        el.outerHTML = '<div class="finished">It\'s here!</div>';
+        clearInterval(timer);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      el.innerHTML = `
+        <div class="unit"><div class="number">${days}</div><div class="label">Days</div></div>
+        <div class="unit"><div class="number">${hours}</div><div class="label">Hours</div></div>
+        <div class="unit"><div class="number">${minutes}</div><div class="label">Minutes</div></div>
+        <div class="unit"><div class="number">${seconds}</div><div class="label">Seconds</div></div>
+      `;
+    }
+
+    render();
+    const timer = setInterval(render, 1000);
+  </script>
+
+</body>
+</html>
